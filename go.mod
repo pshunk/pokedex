@@ -1,0 +1,3 @@
+module github.com/pshunk/pokedex
+
+go 1.27.2
