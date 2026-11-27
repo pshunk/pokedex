@@ -5,6 +5,8 @@ import (
 	"fmt"
 	"os"
 	"strings"
+
+	"github.com/pshunk/pokedex/internal/pokecache/pokeapi"
 )
 
 func startRepl(config *config) {
@@ -44,19 +46,32 @@ type command struct {
 
 func getCommands() map[string]command {
 	return map[string]command{
-		"exit": {
-			name:        "exit",
-			description: "Exit the pokedex",
-			callback:    commandExit,
-		},
 		"help": {
 			name:        "help",
 			description: "Displays a help message",
 			callback:    commandHelp,
 		},
+		"map": {
+			name:        "map",
+			description: "Displays locations in the Pokemon games, use the command again to advance the list",
+			callback:    commandMapf,
+		},
+		"mapb": {
+			name:        "mapb",
+			description: "Moves backwards in the list of map locations",
+			callback:    commandMapb,
+		},
+		"exit": {
+			name:        "exit",
+			description: "Exit the pokedex",
+			callback:    commandExit,
+		},
 	}
 }
 
 type config struct {
-	commands map[string]command
+	commands      map[string]command
+	pokeapiClient pokeapi.Client
+	mapUrl        string
+	mapPrevUrl    string
 }
