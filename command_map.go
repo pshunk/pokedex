@@ -4,7 +4,7 @@ import (
 	"fmt"
 )
 
-func commandMapf(config *config) error {
+func commandMapf(config *config, param *string) error {
 	if config.mapUrl == "" {
 		config.mapUrl = "https://pokeapi.co/api/v2/location-area/"
 	}
@@ -28,7 +28,7 @@ func commandMapf(config *config) error {
 	return nil
 }
 
-func commandMapb(config *config) error {
+func commandMapb(config *config, param *string) error {
 	if config.mapPrevUrl == "" {
 		return fmt.Errorf("You're on the first page")
 	}

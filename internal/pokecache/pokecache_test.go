@@ -6,10 +6,10 @@ import (
 )
 
 func TestAddGet(t *testing.T) {
-	cache := newCache(time.Hour)
-	cache.add("first", []byte("original"))
-	cache.add("second", []byte("other"))
-	cache.add("first", []byte("updated"))
+	cache := NewCache(time.Hour)
+	cache.Add("first", []byte("original"))
+	cache.Add("second", []byte("other"))
+	cache.Add("first", []byte("updated"))
 
 	for _, tc := range []struct {
 		key   string
@@ -21,7 +21,7 @@ func TestAddGet(t *testing.T) {
 		{key: "missing", found: false},
 	} {
 		t.Run(tc.key, func(t *testing.T) {
-			got, ok := cache.get(tc.key)
+			got, ok := cache.Get(tc.key)
 			if ok != tc.found || string(got) != tc.want {
 				t.Fatalf("Get(%q) = %q, %v; want %q, %v", tc.key, got, ok, tc.want, tc.found)
 			}
@@ -42,10 +42,10 @@ func TestReap(t *testing.T) {
 		{name: "expired", age: 10 * time.Second, found: false},
 	} {
 		t.Run(tc.name, func(t *testing.T) {
-			cache := newCache(time.Hour)
-			cache.add("page", []byte("locations"))
+			cache := NewCache(time.Hour)
+			cache.Add("page", []byte("locations"))
 			cache.reap(time.Now().Add(tc.age), 5*time.Second)
-			_, ok := cache.get("page")
+			_, ok := cache.Get("page")
 			if ok != tc.found {
 				t.Fatalf("Get after reaping = %v; want %v", ok, tc.found)
 			}
@@ -54,11 +54,11 @@ func TestReap(t *testing.T) {
 }
 
 func TestReapLoop(t *testing.T) {
-	cache := newCache(20 * time.Millisecond)
-	cache.add("page", []byte("locations"))
+	cache := NewCache(20 * time.Millisecond)
+	cache.Add("page", []byte("locations"))
 	deadline := time.Now().Add(time.Second)
 	for time.Now().Before(deadline) {
-		if _, ok := cache.get("page"); !ok {
+		if _, ok := cache.Get("page"); !ok {
 			return
 		}
 		time.Sleep(5 * time.Millisecond)
