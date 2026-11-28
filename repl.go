@@ -71,6 +71,21 @@ func getCommands() map[string]command {
 			description: "Displays all of the Pokemon available in an area",
 			callback:    commandExplore,
 		},
+		"catch": {
+			name:        "catch",
+			description: "Attempt to catch a Pokemon",
+			callback:    commandCatch,
+		},
+		"inspect": {
+			name:        "inspect",
+			description: "Inspect one of your previously captured Pokemon",
+			callback:    commandInspect,
+		},
+		"pokedex": {
+			name:        "pokedex",
+			description: "Lists all of the pokemon that are currently in your pokedex",
+			callback:    commandPokedex,
+		},
 		"exit": {
 			name:        "exit",
 			description: "Exit the pokedex",
@@ -84,4 +99,5 @@ type config struct {
 	pokeapiClient pokeapi.Client
 	mapUrl        string
 	mapPrevUrl    string
+	pokedex       map[string]pokeapi.Pokemon
 }

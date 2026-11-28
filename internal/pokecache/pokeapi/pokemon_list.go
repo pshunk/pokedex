@@ -11,7 +11,7 @@ func (c *Client) GetLocation(locationName *string) (location, error) {
 	location := location{}
 
 	if locationName == nil {
-		return location, fmt.Errorf(`Include the name of the location you wish to explore, example: "explore canalave-city-area"`)
+		return location, nil
 	}
 
 	url := baseURL + "/location-area/" + *locationName
@@ -33,6 +33,7 @@ func (c *Client) GetLocation(locationName *string) (location, error) {
 	if resp.StatusCode > 299 {
 		return location, fmt.Errorf("Could not find results for the given location")
 	}
+
 	defer resp.Body.Close()
 
 	data, err := io.ReadAll(resp.Body)
